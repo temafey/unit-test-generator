@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {namespace};
+{useStatement}
+
+/**
+ * Test for class {className}
+ *
+ * @class {testClassName}
+ *
+ * @package {namespace}
+ */
+class {testClassName} extends UnitTestCase
+{{useTraits}
+    /**
+     * Called before the first test of the test case class
+     */
+    public static function setUpBeforeClass()
+    {
+    }
+
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+    }
+{methods}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
+
+    /**
+     * Called after the last test of the test case class
+     */
+    public static function tearDownAfterClass()
+    {
+    }
+}

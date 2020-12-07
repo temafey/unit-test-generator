@@ -1,0 +1,16 @@
+
+    /**
+     * Create and return mock object for class {mockClassName}
+     *
+     * @param mixed[] $mockArgs
+     * @param mixed[] $mockTimes
+     *
+     * @return \{mockInterface}|\{mockClassName}
+     */
+    protected function {mockMethodName}(
+        array $mockArgs = {mockArgs},
+        array $mockTimes = {mockTimes}
+    ): \{mockInterface} {
+        {mock}
+        return $mock;
+    }

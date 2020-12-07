@@ -1,0 +1,21 @@
+
+    /**
+     * Test for "{methodComment}".
+     *
+     * @test
+     *
+     * @group unit
+     *
+     * @covers       {fullClassName}::{origMethodName}
+     * @expectedException {expected}
+     *
+     * @dataProvider {dataProviderClassName}::{dataProviderMethodName}()
+     *
+     * @param mixed[] $mockArgs
+     * @param mixed[] $mockTimes
+     */
+    public function {methodName}Test(array $mockArgs, array $mockTimes): void
+    {
+        {argumentsInitialize}
+        {className}::{origMethodName}({arguments});{additional}
+    }

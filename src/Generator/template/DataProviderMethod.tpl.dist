@@ -1,0 +1,10 @@
+
+    /**
+     * Return test data for {testClassName}
+     *
+     * @return mixed[]
+     */
+    public function {dataProviderMethodName}(): array
+    {
+        return {dataProviderArgs};
+    }

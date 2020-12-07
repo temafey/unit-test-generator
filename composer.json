@@ -1,0 +1,29 @@
+{
+    "name": "micro-module/unit-test-generator",
+    "description": "POC for unit test generator",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+      "php": "^7.4",
+      "ext-json": "*",
+      "fzaninotto/faker": "^1.9"
+    },
+    "require-dev": {
+      "jakub-onderka/php-console-highlighter": "^0.4",
+      "jakub-onderka/php-parallel-lint": "^1.0",
+      "mockery/mockery": "^1.2",
+      "phpmd/phpmd": "^2.6",
+      "phpstan/phpstan": "^0.11",
+      "phpstan/phpstan-mockery": "^0.11",
+      "phpstan/phpstan-phpunit": "^0.11",
+      "phpunit/phpunit": "^8.0",
+      "roave/security-advisories": "dev-master",
+      "symplify/easy-coding-standard": "^5.4",
+      "vimeo/psalm": "^3.0"
+    },
+    "autoload": {
+      "psr-4": {
+        "MicroModule\\UnitTestGenerator\\": "src/"
+      }
+    }
+}

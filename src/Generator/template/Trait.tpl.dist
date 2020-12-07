@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {namespace};
+
+/**
+ * Mock helper trait
+ *
+ * @package {namespace}
+ */
+trait {className}
+{{methods}}

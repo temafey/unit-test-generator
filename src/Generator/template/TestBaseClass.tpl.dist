@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {namespace};
+{useStatement}
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Base Test class
+ *
+ * @class Abstract base class
+ * @package {namespace}
+ */
+abstract class Base extends TestCase
+{
+
+}
+
+

@@ -1,0 +1,11 @@
+
+    /**
+     * Create and return mock object for class {mockClassName}
+     *
+     * @return \{mockInterface}|\{mockClassName}
+     */
+    protected function {mockMethodName}()
+    {
+        {mock}
+        return $mock;
+    }
