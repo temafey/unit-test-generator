@@ -348,6 +348,9 @@ trait CodeHelper
      */
     private function parseUseStatements(ReflectionClass $reflection): array
     {
+        if (!defined('T_NAME_QUALIFIED')) {
+            define('T_NAME_QUALIFIED', 314);
+        }
         $filename = $reflection->getFileName();
 
         if (false === $filename) {
@@ -385,6 +388,7 @@ trait CodeHelper
                 }
                 switch ($token[0]) {
                     case T_STRING:
+                    case T_NAME_QUALIFIED:
                     case T_NS_SEPARATOR:
                         $builtNamespace .= $token[1];
 
@@ -427,6 +431,7 @@ trait CodeHelper
                 if ($record) {
                     switch ($token[0]) {
                         case T_STRING:
+                        case T_NAME_QUALIFIED:
                         case T_NS_SEPARATOR:
                             $currentUse[$record] .= $token[1];
 

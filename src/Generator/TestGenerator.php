@@ -787,8 +787,8 @@ class TestGenerator extends AbstractGenerator
                             );
                         }
 
-                        if (!$excludeConstructor && $param->getClass()) {
-                            $className = $param->getClass() ?: $annotationParams[$i];
+                        if (!$excludeConstructor && $param->getType()) {
+                            $className = (string) $param->getType() ?: $annotationParams[$i];
 
                             if (null === $className) {
                                 throw new InvalidClassnameException(sprintf('Class name could not be null.'));
