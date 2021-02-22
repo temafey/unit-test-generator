@@ -6,7 +6,7 @@
     "require": {
       "php": "^7.4 || ^8.0",
       "ext-json": "*",
-      "fzaninotto/faker": "^1.9"
+      "micro-module/faker": "^1.9"
     },
     "require-dev": {
       "jakub-onderka/php-console-highlighter": "^0.4",
