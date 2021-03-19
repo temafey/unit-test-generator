@@ -292,8 +292,9 @@ trait CodeHelper
                         continue;
                     }
 
-                    if (is_array($useToken) && T_STRING === $useToken[0]) {
+                    if (is_array($useToken) && T_NAME_QUALIFIED === $useToken[0]) {
                         $useToken[1] = trim($useToken[1]);
+
                         if (!$namespaceFinish) {
                             $namespace[] = $useToken[1];
                         } else {
@@ -349,7 +350,7 @@ trait CodeHelper
     private function parseUseStatements(ReflectionClass $reflection): array
     {
         if (!defined('T_NAME_QUALIFIED')) {
-            define('T_NAME_QUALIFIED', 314);
+            define('T_NAME_QUALIFIED', 311);
         }
         $filename = $reflection->getFileName();
 
@@ -375,6 +376,7 @@ trait CodeHelper
         foreach ($tokens as $token) {
             if (T_NAMESPACE === $token[0]) {
                 $buildingNamespace = true;
+
                 if ($matchedNamespace) {
                     break;
                 }

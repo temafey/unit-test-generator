@@ -395,7 +395,7 @@ class DataProviderGenerator extends AbstractGenerator
             }
             $defaultArgs = null;
 
-            if (isset($dataProvider['dataProviderMethods'][self::DATA_PROVIDER_DEFAULT_ARGS])) {
+            if (!empty($dataProvider['dataProviderMethods'][self::DATA_PROVIDER_DEFAULT_ARGS])) {
                 $defaultArgs = $dataProvider['dataProviderMethods'][self::DATA_PROVIDER_DEFAULT_ARGS];
                 unset($dataProvider['dataProviderMethods'][self::DATA_PROVIDER_DEFAULT_ARGS]);
             }

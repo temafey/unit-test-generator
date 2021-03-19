@@ -177,12 +177,16 @@ class Mockery implements MockInterface
                     }
 
                     if (class_exists($returnType) || interface_exists($returnType)) {
-                        $filename = $reflection->getFileName();
+                        $refNamespaces = [];
 
-                        if (false === $filename) {
-                            throw new FileNotExistsException(sprintf('File \'%s\' does not exists.', $reflection->getName()));
+                        if (!$reflection->isInternal()) {
+                            $filename = $reflection->getFileName();
+
+                            if (false === $filename) {
+                                throw new FileNotExistsException(sprintf('File \'%s\' does not exist.', $reflection->getName()));
+                            }
+                            $refNamespaces = $this->getNamespacesFromSource($filename);
                         }
-                        $refNamespaces = $this->getNamespacesFromSource($filename);
                         $namespacesFromParentClassesAndTraits = $this->getNamespacesFromParentClassesAndTraits($reflection);
                         $namespaces = array_merge($parentNamespaces, $refNamespaces, $namespacesFromParentClassesAndTraits);
                         $refMockName = $mockGenerator->addMock($returnType, $reflection, $refMethod, $namespaces, $level, $parentClass);
@@ -230,12 +234,16 @@ class Mockery implements MockInterface
 
                         break;
                     }
-                    $filename = $reflection->getFileName();
+                    $refNamespaces = [];
 
-                    if (false === $filename) {
-                        throw new FileNotExistsException(sprintf('File \'%s\' does not exists.', $reflection->getName()));
+                    if (!$reflection->isInternal()) {
+                        $filename = $reflection->getFileName();
+
+                        if (false === $filename) {
+                            throw new FileNotExistsException(sprintf('File \'%s\' does not exist.', $reflection->getName()));
+                        }
+                        $refNamespaces = $this->getNamespacesFromSource($filename);
                     }
-                    $refNamespaces = $this->getNamespacesFromSource($filename);
                     $namespacesFromParentClassesAndTraits = $this->getNamespacesFromParentClassesAndTraits($reflection);
                     $namespaces = array_merge($parentNamespaces, $refNamespaces, $namespacesFromParentClassesAndTraits);
                     $refMockName = $mockGenerator->addMock($returnType, $reflection, $refMethod, $namespaces, $level, $parentClass);

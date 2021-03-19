@@ -251,11 +251,11 @@ class TestClass
                 $treePath = array_reverse(explode(DIRECTORY_SEPARATOR, $sourcePath));
                 $treeNamespace = array_reverse(explode(DIRECTORY_SEPARATOR, $namespace));
                 $sourcePath = [];
-                $testFolderPosition = count($treePath) + 1;
+                $testFolderPosition = 0;
 
                 foreach ($treePath as $i => $part) {
                     if ($part === $treeNamespace[$i]) {
-                        --$testFolderPosition;
+                        ++$testFolderPosition;
 
                         continue;
                     }
@@ -275,14 +275,14 @@ class TestClass
         $mockTestPath = $testPath . DIRECTORY_SEPARATOR . self::DEFAULT_MOCK_NAMESPACE;
         $namespace = explode(DIRECTORY_SEPARATOR, $namespace);
         $projectNamespace = $namespace;
-        $baseNamespace = array_splice($projectNamespace, -$testFolderPosition+1);
+        $baseNamespace = array_splice($projectNamespace, -$testFolderPosition);
         $basePath = implode(DIRECTORY_SEPARATOR, $baseNamespace);
         $baseNamespace = implode('\\', $baseNamespace);
         $projectNamespace = implode('\\', $projectNamespace);
         $dataProviderNamespace = $projectNamespace . '\\' . self::DEFAULT_TEST_NAMESPACE . '\\' . $this->unitTestFolder . '\\' . self::DEFAULT_DATA_PROVIDER_NAMESPACE;
         $mockNamespace = $projectNamespace . '\\' . self::DEFAULT_TEST_NAMESPACE . '\\' . $this->unitTestFolder . '\\' . self::DEFAULT_MOCK_NAMESPACE;
         $baseTestNamespace = $projectNamespace . '\\' . self::DEFAULT_TEST_NAMESPACE . '\\' . $this->unitTestFolder;
-        array_splice($namespace, -$testFolderPosition+1, 0, [self::DEFAULT_TEST_NAMESPACE, $this->unitTestFolder]);
+        array_splice($namespace, -$testFolderPosition, 0, [self::DEFAULT_TEST_NAMESPACE, $this->unitTestFolder]);
         $testNamespace = implode('\\', $namespace);
         $localTestPath .= self::DEFAULT_TEST_NAMESPACE . DIRECTORY_SEPARATOR . $this->unitTestFolder;
         $testPath .= DIRECTORY_SEPARATOR . $basePath;
