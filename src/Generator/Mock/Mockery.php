@@ -117,7 +117,7 @@ class Mockery implements MockInterface
 
                 if (
                     class_exists('ReflectionUnionType') &&
-                    $className instanceof \ReflectionUnionType
+                    $returnType instanceof \ReflectionUnionType
                 ) {
                     // use only first return type
                     // @TODO return all return types

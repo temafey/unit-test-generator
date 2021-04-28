@@ -524,7 +524,6 @@ trait CodeHelper
      */
     protected function getMethodReturnType(ReflectionMethod $reflectionMethod): string
     {
-        $returnType = null;
         $className = $reflectionMethod->getDeclaringClass()->getName();
 
         if (in_array($reflectionMethod->getName(), self::METHOD_NAMES_RETURN_SELF, true)) {
@@ -534,7 +533,7 @@ trait CodeHelper
 
             if (
                 class_exists('ReflectionUnionType') &&
-                $className instanceof \ReflectionUnionType
+                $returnType instanceof \ReflectionUnionType
             ) {
                 // use only first return type
                 // @TODO return all return types
@@ -546,7 +545,7 @@ trait CodeHelper
             }
         }
 
-        if (!$returnType || $returnType === 'array') {
+        if (!$returnType || $returnType === DataTypeInterface::TYPE_ARRAY) {
             $returnType = $this->getReturnFromReflectionMethodAnnotation($reflectionMethod, false, true);
 
             if (null === $returnType) {
