@@ -532,7 +532,15 @@ trait CodeHelper
         } else {
             $returnType = $reflectionMethod->getReturnType();
 
-            if (null !== $returnType) {
+            if (
+                class_exists('ReflectionUnionType') &&
+                $returnType instanceof \ReflectionUnionType
+            ) {
+                // use only first return type
+                // @TODO return all return types
+                $returnType = array_shift($returnType->getTypes());
+            }
+            if ($returnType instanceof \ReflectionNamedType) {
                 $returnType = $returnType->getName();
             }
         }
