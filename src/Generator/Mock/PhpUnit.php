@@ -126,7 +126,7 @@ class PhpUnit implements MockInterface
 
             if (!$returnType) {
                 try {
-                    $returnType = $this->getReturnFromAnnotation($refMethod);
+                    $returnType = $this->getReturnFromReflectionMethodAnnotation($refMethod);
                 } catch (ReturnTypeNotFoundException $e) {
                     if ($this->returnTypeNotFoundThrowable) {
                         throw $e;

@@ -27,5 +27,6 @@ interface DataTypeInterface
     public const TYPE_THIS = '$this';
     public const TYPE_SELF = 'self';
     public const TYPE_STATIC = 'static';
+    public const TYPE_OBJECT = 'object';
     public const TYPE_ = '';
 }

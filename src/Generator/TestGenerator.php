@@ -646,7 +646,21 @@ class TestGenerator extends AbstractGenerator
             $argumentInitialize = '$' . $param->getName() . ' = ';
 
             if (null !== $param->getType()) {
-                $annotationParams[$i] = $param->getType()->getName();
+                $returnType = $param->getType();
+
+                if (
+                    class_exists('ReflectionUnionType') &&
+                    $returnType instanceof \ReflectionUnionType
+                ) {
+                    // use only first return type
+                    // @TODO return all return types
+                    $returnTypes = $returnType->getTypes();
+                    $returnType = array_shift($returnTypes);
+                }
+                if ($returnType instanceof \ReflectionNamedType) {
+                    $returnType = $returnType->getName();
+                }
+                $annotationParams[$i] = $returnType;
             } elseif (isset($annotationParams[$i])) {
                 $annotationParam = $this->findAndReturnClassNameFromUseStatement($annotationParams[$i], $reflectionClass);
 
@@ -768,7 +782,13 @@ class TestGenerator extends AbstractGenerator
                         break;
 
                     case DataTypeInterface::TYPE_CLOSURE:
+                    case DataTypeInterface::TYPE_CALLABLE:
                         $argumentInitialize .= 'function () { return true; }';
+
+                        break;
+
+                    case DataTypeInterface::TYPE_OBJECT:
+                        $argumentInitialize .= 'new class {}';
 
                         break;
 
@@ -788,7 +808,20 @@ class TestGenerator extends AbstractGenerator
                         }
 
                         if (!$excludeConstructor && $param->getType()) {
-                            $className = (string) $param->getType() ?: $annotationParams[$i];
+                            $className = $param->getType() ?: $this->getReturnFromReflectionMethodAnnotation($reflectionMethod);
+
+                            if (
+                                class_exists('ReflectionUnionType') &&
+                                $className instanceof \ReflectionUnionType
+                            ) {
+                                // use only first return type
+                                // @TODO return all return types
+                                $className = $className->getTypes();
+                                $className = array_shift($className);
+                            }
+                            if ($className instanceof \ReflectionNamedType) {
+                                $className = $className->getName();
+                            }
 
                             if (null === $className) {
                                 throw new InvalidClassnameException(sprintf('Class name could not be null.'));

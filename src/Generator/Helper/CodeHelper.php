@@ -28,7 +28,7 @@ trait CodeHelper
     protected $namespaces = [];
 
     /**
-     * Find and return method return type from annotation.
+     * Parse and return method return type from DocCOmment of ReflectionMethod object.
      *
      * @param ReflectionMethod $refMethod
      * @param bool $strictMode
@@ -38,13 +38,13 @@ trait CodeHelper
      *
      * @throws ReturnTypeNotFoundException
      */
-    protected function getReturnFromAnnotation(
+    protected function getReturnFromReflectionMethodAnnotation(
         ReflectionMethod $refMethod,
         bool $strictMode = true,
         bool $returnOrigin = false
     ): ?string {
-        $return = [];
         $docComment = $refMethod->getDocComment();
+        $return = [];
 
         if ($docComment) {
             preg_match_all('/@return (.*)$/Um', $docComment, $return);
@@ -534,11 +534,12 @@ trait CodeHelper
 
             if (
                 class_exists('ReflectionUnionType') &&
-                $returnType instanceof \ReflectionUnionType
+                $className instanceof \ReflectionUnionType
             ) {
                 // use only first return type
                 // @TODO return all return types
-                $returnType = array_shift($returnType->getTypes());
+                $returnTypes = $returnType->getTypes();
+                $returnType = array_shift($returnTypes);
             }
             if ($returnType instanceof \ReflectionNamedType) {
                 $returnType = $returnType->getName();
@@ -546,7 +547,7 @@ trait CodeHelper
         }
 
         if (!$returnType || $returnType === 'array') {
-            $returnType = $this->getReturnFromAnnotation($reflectionMethod, false, true);
+            $returnType = $this->getReturnFromReflectionMethodAnnotation($reflectionMethod, false, true);
 
             if (null === $returnType) {
                 $returnType = DataTypeInterface::TYPE_MIXED;

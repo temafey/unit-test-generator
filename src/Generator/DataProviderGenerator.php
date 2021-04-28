@@ -595,7 +595,7 @@ class DataProviderGenerator extends AbstractGenerator
     private function getFakeDataForMethodReturnType(ReflectionMethod $method): ?array
     {
         $typeIsArray = false;
-        $type = $this->getReturnFromAnnotation($method, false, true);
+        $type = $this->getReturnFromReflectionMethodAnnotation($method, false, true);
 
         if (null === $type) {
             $type = $this->getMethodReturnType($method);
@@ -710,13 +710,22 @@ class DataProviderGenerator extends AbstractGenerator
     {
         $type = $parameter->getType();
 
-        if (null !== $type) {
+        if (
+            class_exists('ReflectionUnionType') &&
+            $type instanceof \ReflectionUnionType
+        ) {
+            // use only first return type
+            // @TODO return all return types
+            $type = $type->getTypes();
+            $type = array_shift($type);
+        }
+        if ($type instanceof \ReflectionNamedType) {
             $type = $type->getName();
         }
 
         if (null === $type) {
             try {
-                $type = $this->getReturnFromAnnotation($parameter->getDeclaringFunction());
+                $type = $this->getReturnFromReflectionMethodAnnotation($parameter->getDeclaringFunction());
             } catch (ReturnTypeNotFoundException $e) {
                 if ($this->returnTypeNotFoundThrowable) {
                     throw $e;

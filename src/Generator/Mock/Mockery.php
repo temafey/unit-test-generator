@@ -117,11 +117,12 @@ class Mockery implements MockInterface
 
                 if (
                     class_exists('ReflectionUnionType') &&
-                    $returnType instanceof \ReflectionUnionType
+                    $className instanceof \ReflectionUnionType
                 ) {
                     // use only first return type
                     // @TODO return all return types
-                    $returnType = array_shift($returnType->getTypes());
+                    $returnTypes = $returnType->getTypes();
+                    $returnType = array_shift($returnTypes);
                 }
                 if ($returnType instanceof \ReflectionNamedType) {
                     $returnType = $returnType->getName();
@@ -130,13 +131,17 @@ class Mockery implements MockInterface
 
             if (!$returnType) {
                 try {
-                    $returnType = $this->getReturnFromAnnotation($refMethod);
+                    $returnType = $this->getReturnFromReflectionMethodAnnotation($refMethod);
                 } catch (ReturnTypeNotFoundException $e) {
                     if ($this->returnTypeNotFoundThrowable) {
                         throw $e;
                     }
                     $returnType = DataTypeInterface::TYPE_MIXED;
                 }
+            }
+            if (strpos($returnType, '<')) {
+                //@TODO build mock after analyze <> structure.
+                $returnType = preg_replace("/\<[^)]+\>/",'', $returnType);
             }
 
             $mockMethod = 'if (array_key_exists(\'' . $refMethodName . '\', $mockTimes)) {
@@ -176,7 +181,7 @@ class Mockery implements MockInterface
                     break;
 
                 case DataTypeInterface::TYPE_ARRAY:
-                    $returnType = $this->getReturnFromAnnotation($refMethod, false, true);
+                    $returnType = $this->getReturnFromReflectionMethodAnnotation($refMethod, false, true);
 
                     if (null === $returnType || $returnType === 'mixed[]') {
                         $returnType = DataTypeInterface::TYPE_ARRAY;
@@ -230,6 +235,11 @@ class Mockery implements MockInterface
                 case DataTypeInterface::TYPE_THIS:
                 case $className:
                     $mockMethod .= '$mockMethod->andReturnSelf();';
+
+                    break;
+
+                case DataTypeInterface::TYPE_OBJECT:
+                    $mockMethod .= '$mockMethod->andReturn(new class {});';
 
                     break;
 
