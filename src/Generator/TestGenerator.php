@@ -718,36 +718,34 @@ class TestGenerator extends AbstractGenerator
                 }
 
                 if (!array_key_exists($i, $annotationParams)) {
-                    if ('{@inheritdoc}' === $methodComment) {
-                        if ($reflectionMethod->getDeclaringClass()->isInterface()) {
-                            throw new Exception(sprintf(
-                                'In interface \'%s\' in method \'%s\' for argument  \'%s\' annotation not exists.',
-                                $reflectionClass->getName(),
-                                $reflectionMethod->getName(),
-                                $param->getName()
-                            ));
+                    if ($reflectionClass->isInterface()) {
+                        throw new Exception(sprintf(
+                            'In interface \'%s\' in method \'%s\' for argument  \'%s\' annotation not exists.',
+                            $reflectionClass->getName(),
+                            $reflectionMethod->getName(),
+                            $param->getName()
+                        ));
+                    }
+                    $interfaces = $reflectionClass->getInterfaces();
+
+                    foreach ($interfaces as $interface) {
+                        try {
+                            $parentMethod = $interface->getMethod($reflectionMethod->getName());
+
+                            return $this->processMethodDocComment($interface, $parentMethod);
+                            break;
+                        } catch (ReflectionException $e) {
+                            continue;
+                        } catch (RuntimeException $e) {
+                            break;
                         }
-                        $interfaces = $reflectionMethod->getDeclaringClass()->getInterfaces();
+                    }
+                    $parentClass = $reflectionMethod->getDeclaringClass()->getParentClass();
 
-                        foreach ($interfaces as $interface) {
-                            try {
-                                $parentMethod = $interface->getMethod($reflectionMethod->getName());
+                    if ($parentClass) {
+                        $parentMethod = $parentClass->getMethod($reflectionMethod->getName());
 
-                                return $this->processMethodDocComment($interface, $parentMethod);
-                                break;
-                            } catch (ReflectionException $e) {
-                                continue;
-                            } catch (RuntimeException $e) {
-                                break;
-                            }
-                        }
-                        $parentClass = $reflectionMethod->getDeclaringClass()->getParentClass();
-
-                        if ($parentClass) {
-                            $parentMethod = $parentClass->getMethod($reflectionMethod->getName());
-
-                            return $this->processMethodDocComment($parentClass, $parentMethod);
-                        }
+                        return $this->processMethodDocComment($parentClass, $parentMethod);
                     }
 
                     throw new RuntimeException(

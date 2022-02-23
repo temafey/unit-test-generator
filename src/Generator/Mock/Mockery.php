@@ -243,6 +243,11 @@ class Mockery implements MockInterface
 
                     break;
 
+                case DataTypeInterface::TYPE_RESOURCE:
+                    $mockMethod .= '$mockMethod->andReturn(typeOf(\'resource\'));';
+
+                    break;
+
                 default:
                     if (
                         in_array($returnType, $extendedClasses, true) ||

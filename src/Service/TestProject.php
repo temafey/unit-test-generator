@@ -49,12 +49,12 @@ class TestProject
      *
      * @throws Exception
      */
-    public function generate(): void
+    public function generate(bool $deepLevel = true): void
     {
         if (!file_exists($this->sourcePath)) {
             throw new Exception("Source file '{$this->sourcePath}' doesn't exists!");
         }
-        $modules = $this->scanProjectSourceFolder($this->sourcePath, true);
+        $modules = $this->scanProjectSourceFolder($this->sourcePath, $deepLevel);
 
         foreach ($modules as $folder) {
             foreach ($folder as $file) {
