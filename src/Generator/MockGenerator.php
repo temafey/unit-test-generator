@@ -388,6 +388,10 @@ class MockGenerator extends AbstractGenerator
         ReflectionMethod $parentMethod,
         ReflectionClass $parentClass
     ): ReflectionClass {
+        if (str_contains($className, '<')) {
+            $className = substr($className, 0, strpos($className, '<'));
+        }
+
         try {
             $reflection = new ReflectionClass($className);
         } catch (Throwable $e) {
